@@ -6,6 +6,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 public class FluxAndMonoServices {
 
@@ -45,6 +46,12 @@ public class FluxAndMonoServices {
                 .log();
     }
 
+    public Flux<String> fruitMonoFlatMapMany() {
+        return Mono.just("MonoApple")
+                .flatMapMany(fruit -> Flux.just(fruit.split("")))
+                .log();
+    }
+
     public Flux<String> fruitsFluxFlatMapAsync() {
         return Flux.fromIterable(List.of("Apple", "Banana", "Orange"))
                 .flatMap(fruit -> Flux.just(fruit.split(""))
@@ -60,6 +67,14 @@ public class FluxAndMonoServices {
                         .delayElements(Duration.ofMillis(
                                 new Random().nextInt(1000)
                         )))
+                .log();
+    }
+
+    public Flux<String> fruitsFluxTransform(int length) {
+        Function<Flux<String>, Flux<String>> filter = fruitFlux -> fruitFlux
+                .filter(fruit -> fruit.length() > length);
+        return Flux.fromIterable(List.of("Apple", "Banana", "Orange"))
+                .transform(filter)
                 .log();
     }
 

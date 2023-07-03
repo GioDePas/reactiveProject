@@ -94,4 +94,44 @@ class FluxAndMonoServicesTest {
                 .expectNext("Banana", "Orange")
                 .verifyComplete();
     }
+
+    @Test
+    void fruitsFluxTransformDefaultIfEmpty() {
+        var fruitsFluxTransformDefaultIfEmpty = fluxAndMonoServices.fruitsFluxTransformDefaultIfEmpty(10);
+        StepVerifier.create(fruitsFluxTransformDefaultIfEmpty)
+                .expectNext("Default")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxTransformSwitchIfEmpty() {
+        var fruitsFluxTransformSwitchIfEmpty = fluxAndMonoServices.fruitsFluxTransformSwitchIfEmpty(8);
+        StepVerifier.create(fruitsFluxTransformSwitchIfEmpty)
+                .expectNext("Pineapple", "Jack Fruit")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxConcat() {
+        var fruitsFluxConcat = fluxAndMonoServices.fruitsFluxConcat().log();
+        StepVerifier.create(fruitsFluxConcat)
+                .expectNext("Apple", "Orange", "Carrot", "Tomato")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxConcatWith() {
+        var fruitsFluxConcatWith = fluxAndMonoServices.fruitsFluxConcatWith().log();
+        StepVerifier.create(fruitsFluxConcatWith)
+                .expectNext("Apple", "Orange", "Carrot", "Tomato")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsMonoConcatWith() {
+        var fruitsMonoConcatWith = fluxAndMonoServices.fruitsMonoConcatWith().log();
+        StepVerifier.create(fruitsMonoConcatWith)
+                .expectNext("Apple", "Carrot")
+                .verifyComplete();
+    }
 }

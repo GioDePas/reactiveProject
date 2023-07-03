@@ -78,6 +78,43 @@ public class FluxAndMonoServices {
                 .log();
     }
 
+    public Flux<String> fruitsFluxTransformDefaultIfEmpty(int length) {
+        Function<Flux<String>, Flux<String>> filter = fruitFlux -> fruitFlux
+                .filter(fruit -> fruit.length() > length);
+        return Flux.fromIterable(List.of("Apple", "Banana", "Orange"))
+                .transform(filter)
+                .defaultIfEmpty("Default")
+                .log();
+    }
+
+    public Flux<String> fruitsFluxTransformSwitchIfEmpty(int length) {
+        Function<Flux<String>, Flux<String>> filter = fruitFlux -> fruitFlux
+                .filter(fruit -> fruit.length() > length);
+        return Flux.fromIterable(List.of("Apple", "Banana", "Orange"))
+                .transform(filter)
+                .switchIfEmpty(Flux.just("Pineapple", "Jack Fruit"))
+                .transform(filter)
+                .log();
+    }
+
+    public Flux<String> fruitsFluxConcat() {
+        var fruits = Flux.just("Apple", "Orange");
+        var vegetables = Flux.just("Carrot", "Tomato");
+        return Flux.concat(fruits, vegetables).log();
+    }
+
+    public Flux<String> fruitsFluxConcatWith() {
+        var fruits = Flux.just("Apple", "Orange");
+        var vegetables = Flux.just("Carrot", "Tomato");
+        return fruits.concatWith(vegetables).log();
+    }
+
+    public Flux<String> fruitsMonoConcatWith() {
+        var fruits = Mono.just("Apple");
+        var vegetables = Mono.just("Carrot");
+        return fruits.concatWith(vegetables).log();
+    }
+
     public static void main(String[] args) {
 
         FluxAndMonoServices fluxAndMonoServices = new FluxAndMonoServices();

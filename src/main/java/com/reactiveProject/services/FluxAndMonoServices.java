@@ -151,6 +151,20 @@ public class FluxAndMonoServices {
         return fruits.zipWith(vegetables, (f, v) -> f + " " + v).log();
     }
 
+    public Flux<String> fruitsFluxZipTuple() {
+        var fruits = Flux.just("Apple", "Orange");
+        var vegetables = Flux.just("Carrot", "Tomato");
+        var animals = Flux.just("Dog", "Cat");
+        return Flux.zip(fruits, vegetables, animals)
+                .map(tuple -> tuple.getT1() + " " + tuple.getT2() + " " + tuple.getT3());
+    }
+
+    public Mono<String> fruitsMonoZipWith() {
+        var fruits = Mono.just("Apple");
+        var vegetables = Mono.just("Carrot");
+        return fruits.zipWith(vegetables, (f, v) -> f + " " + v).log();
+    }
+
     public static void main(String[] args) {
 
         FluxAndMonoServices fluxAndMonoServices = new FluxAndMonoServices();

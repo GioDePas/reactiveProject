@@ -175,4 +175,20 @@ class FluxAndMonoServicesTest {
                 .expectNext("Apple Carrot", "Orange Tomato")
                 .verifyComplete();
     }
+
+    @Test
+    void fruitsFluxZipTuple() {
+        var fruitsFluxZipTuple = fluxAndMonoServices.fruitsFluxZipTuple().log();
+        StepVerifier.create(fruitsFluxZipTuple)
+                .expectNext("Apple Carrot Dog", "Orange Tomato Cat")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsMonoZipWith() {
+        var fruitsMonoZipWith = fluxAndMonoServices.fruitsMonoZipWith().log();
+        StepVerifier.create(fruitsMonoZipWith)
+                .expectNext("Apple Carrot")
+                .verifyComplete();
+    }
 }

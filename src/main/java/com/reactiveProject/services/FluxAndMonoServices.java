@@ -115,6 +115,42 @@ public class FluxAndMonoServices {
         return fruits.concatWith(vegetables).log();
     }
 
+    public Flux<String> fruitsFluxMerge() {
+        var fruits = Flux.just("Apple", "Orange")
+                .delayElements(Duration.ofMillis(50));
+        var vegetables = Flux.just("Carrot", "Tomato")
+                .delayElements(Duration.ofMillis(75));
+        return Flux.merge(fruits, vegetables);
+    }
+
+    public Flux<String> fruitsFluxMergeWith() {
+        var fruits = Flux.just("Apple", "Orange")
+                .delayElements(Duration.ofMillis(50));
+        var vegetables = Flux.just("Carrot", "Tomato")
+                .delayElements(Duration.ofMillis(75));
+        return fruits.mergeWith(vegetables);
+    }
+
+    public Flux<String> fruitsFluxMergeSequential() {
+        var fruits = Flux.just("Apple", "Orange")
+                .delayElements(Duration.ofMillis(50));
+        var vegetables = Flux.just("Carrot", "Tomato")
+                .delayElements(Duration.ofMillis(75));
+        return Flux.mergeSequential(fruits, vegetables);
+    }
+
+    public Flux<String> fruitsFluxZip() {
+        var fruits = Flux.just("Apple", "Orange");
+        var vegetables = Flux.just("Carrot", "Tomato");
+        return Flux.zip(fruits, vegetables, (f, v) -> f + " " + v).log();
+    }
+
+    public Flux<String> fruitsFluxZipWith() {
+        var fruits = Flux.just("Apple", "Orange");
+        var vegetables = Flux.just("Carrot", "Tomato");
+        return fruits.zipWith(vegetables, (f, v) -> f + " " + v).log();
+    }
+
     public static void main(String[] args) {
 
         FluxAndMonoServices fluxAndMonoServices = new FluxAndMonoServices();

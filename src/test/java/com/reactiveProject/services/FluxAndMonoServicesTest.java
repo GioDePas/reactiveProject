@@ -134,4 +134,45 @@ class FluxAndMonoServicesTest {
                 .expectNext("Apple", "Carrot")
                 .verifyComplete();
     }
+
+    @Test
+    void fruitsFluxMerge() {
+        var fruitsFluxMerge = fluxAndMonoServices.fruitsFluxMerge().log();
+        StepVerifier.create(fruitsFluxMerge)
+                .expectNext("Apple", "Carrot", "Orange", "Tomato")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxMergeWith() {
+        var fruitsFluxMergeWith = fluxAndMonoServices.fruitsFluxMergeWith().log();
+        StepVerifier.create(fruitsFluxMergeWith)
+                .expectNext("Apple", "Carrot", "Orange", "Tomato")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxMergeSequential() {
+        var fruitsFluxMergeSequential = fluxAndMonoServices.fruitsFluxMergeSequential().log();
+        StepVerifier.create(fruitsFluxMergeSequential)
+                .expectNext("Apple", "Orange", "Carrot", "Tomato")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxZip() {
+        var fruitsFluxZip = fluxAndMonoServices.fruitsFluxZip().log();
+        StepVerifier.create(fruitsFluxZip)
+                .expectNext("Apple Carrot", "Orange Tomato")
+                .verifyComplete();
+    }
+
+
+    @Test
+    void fruitsFluxZipWith() {
+        var fruitsFluxZipWith = fluxAndMonoServices.fruitsFluxZipWith().log();
+        StepVerifier.create(fruitsFluxZipWith)
+                .expectNext("Apple Carrot", "Orange Tomato")
+                .verifyComplete();
+    }
 }

@@ -165,6 +165,56 @@ public class FluxAndMonoServices {
         return fruits.zipWith(vegetables, (f, v) -> f + " " + v).log();
     }
 
+    public Flux<String> fruitsFluxFilterDoOn(int length) {
+        return Flux.fromIterable(List.of("Apple", "Banana", "Orange"))
+                .filter(fruit -> fruit.length() > length)
+                .doOnNext(fruit -> System.out.println("Fruit: " + fruit))
+                .doOnComplete(() -> System.out.println("Completed"))
+                .doOnError((e) -> System.out.println("Error: " + e))
+                .doOnSubscribe((s) -> System.out.println("Subscribed"))
+                .doOnRequest((l) -> System.out.println("Requested: " + l))
+                .doOnCancel(() -> System.out.println("Cancelled"))
+                .doOnTerminate(() -> System.out.println("Terminated"))
+                .doFinally((s) -> System.out.println("Finally: " + s))
+                .log();
+    }
+
+    public Flux<String> fruitsFluxOnErrorReturn() {
+        return Flux.just("Apple", "Orange")
+                .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
+                .onErrorReturn("Default")
+                .log();
+    }
+
+    public Flux<String> fruitsFluxOnErrorContinue() {
+        return Flux.just("Apple", "Mango", "Orange")
+                .map(s -> {
+                    if (s.equalsIgnoreCase("Mango")) {
+                        throw new RuntimeException("Exception Occurred");
+                    }
+                    return s.toUpperCase();
+                })
+                .onErrorContinue((e, s) -> {
+                    System.out.println("Exception: " + e);
+                    System.out.println("Value: " + s);
+                });
+
+    }
+
+    public Flux<String> fruitsFluxOnErrorMap() {
+        return Flux.just("Apple", "Mango", "Orange")
+                .map(s -> {
+                    if (s.equalsIgnoreCase("Mango")) {
+                        throw new RuntimeException("Exception Occurred");
+                    }
+                    return s.toUpperCase();
+                })
+                .onErrorMap(throwable -> {
+                    System.out.println("Exception: " + throwable);
+                    return new IllegalStateException("From onError Map");
+                });
+    }
+
     public static void main(String[] args) {
 
         FluxAndMonoServices fluxAndMonoServices = new FluxAndMonoServices();

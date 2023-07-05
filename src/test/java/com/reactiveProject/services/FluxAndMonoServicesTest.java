@@ -167,7 +167,6 @@ class FluxAndMonoServicesTest {
                 .verifyComplete();
     }
 
-
     @Test
     void fruitsFluxZipWith() {
         var fruitsFluxZipWith = fluxAndMonoServices.fruitsFluxZipWith().log();
@@ -191,4 +190,39 @@ class FluxAndMonoServicesTest {
                 .expectNext("Apple Carrot")
                 .verifyComplete();
     }
+
+    @Test
+    void fruitsFluxFilterDoOn() {
+        var fruitsFluxFilterDoOn = fluxAndMonoServices.fruitsFluxFilterDoOn(5);
+        StepVerifier.create(fruitsFluxFilterDoOn)
+                .expectNext("Banana", "Orange")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxOnErrorReturn() {
+        var fruitsFluxOnErrorReturn = fluxAndMonoServices.fruitsFluxOnErrorReturn();
+        StepVerifier.create(fruitsFluxOnErrorReturn)
+                .expectNext("Apple", "Orange", "Default")
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxOnErrorContinue() {
+        var fruitsFluxOnErrorContinue = fluxAndMonoServices.fruitsFluxOnErrorContinue().log();
+        StepVerifier.create(fruitsFluxOnErrorContinue)
+                .expectNext("APPLE", "ORANGE")
+                .verifyComplete();
+
+    }
+
+    @Test
+    void fruitsFluxOnErrorMap() {
+        var fruitsFluxOnErrorMap = fluxAndMonoServices.fruitsFluxOnErrorMap().log();
+        StepVerifier.create(fruitsFluxOnErrorMap)
+                .expectNext("APPLE")
+                .expectError(IllegalStateException.class)
+                .verify();
+    }
+
 }

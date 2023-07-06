@@ -1,4 +1,4 @@
-package com.reactiveProject.services;
+package com.reactiveProject.service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -198,7 +198,6 @@ public class FluxAndMonoServices {
                     System.out.println("Exception: " + e);
                     System.out.println("Value: " + s);
                 });
-
     }
 
     public Flux<String> fruitsFluxOnErrorMap() {
